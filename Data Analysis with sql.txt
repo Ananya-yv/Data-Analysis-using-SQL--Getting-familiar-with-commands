@@ -1,0 +1,254 @@
+Enter password: ********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 17
+Server version: 8.0.39 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use mydb;
+Database changed
+mysql> create table student(
+    -> name varchar(20),
+    -> rno varchar(5),
+    -> branch varchar(3),
+    -> section varchar(1)
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> insert into student values
+    -> ('Alice','A0001','CSE',A'),
+    '> ('Bob','A0002','CSE',A'),
+    -> ('Cain','A0003','CSE','B'));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near''),
+('Bob','A0002','CSE',A'),
+('Cain','A0003','CSE','B'))' at line 2
+mysql> insert into student values
+    -> ('Alice','A0001','CSE','A'),
+    -> ('Bob','A0002','CSE','A'),
+    -> ('Cain','A0003','CSE','B'),
+    -> ('Daisy','A0004','CSD','B'),
+    -> ('Eliot','A0005','CSD','C'),
+    -> ('Frank','A0006','CSD','C')
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near')' at line 8
+mysql> insert into student values(
+    -> 'Alice','A0001','CSE','A'),
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near'' at line 2
+mysql> insert into student values(
+    -> 'Alice','A0001','CSE','A')
+    -> ('Bob','A0002','CSE','A')
+    -> ('Cain','A0003','CSE','B')
+    -> ('Daisy','A0004','CSD','B')
+    -> ('Eliot','A0005','CSD','C')
+    -> ('Frank','A0006','CSD','C')
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near'('Bob','A0002','CSE','A')
+('Cain','A0003','CSE','B')
+('Daisy','A0004','CSD','B')' at line 3
+mysql> insert into student values
+    -> ('Alice','A0001','CSE','A'),
+    -> ('Bob','A0002','CSE','A'),
+    -> ('Cain','A0003','CSE','B'),
+    -> ('Daisy','A0004','CSD','B'),
+    -> ('Eliot','A0005','CSD','C'),
+    -> ('Frank','A0006','CSD','C');
+Query OK, 6 rows affected (0.03 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++-------+-------+--------+---------+
+| name  | rno   | branch | section |
++-------+-------+--------+---------+
+| Alice | A0001 | CSE    | A       |
+| Bob   | A0002 | CSE    | A       |
+| Cain  | A0003 | CSE    | B       |
+| Daisy | A0004 | CSD    | B       |
+| Eliot | A0005 | CSD    | C       |
+| Frank | A0006 | CSD    | C       |
++-------+-------+--------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select name from student where section='A';
++-------+
+| name  |
++-------+
+| Alice |
+| Bob   |
++-------+
+2 rows in set (0.01 sec)
+
+mysql> select name, branch from student where brench='CSD';
+ERROR 1054 (42S22): Unknown column 'brench' in 'where clause'
+mysql> select name, branch from student where branch='CSD';
++-------+--------+
+| name  | branch |
++-------+--------+
+| Daisy | CSD    |
+| Eliot | CSD    |
+| Frank | CSD    |
++-------+--------+
+3 rows in set (0.00 sec)
+
+mysql> alter table student add marks int(3);
+Query OK, 0 rows affected, 1 warning (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> select * from student;
++-------+-------+--------+---------+-------+
+| name  | rno   | branch | section | marks |
++-------+-------+--------+---------+-------+
+| Alice | A0001 | CSE    | A       |  NULL |
+| Bob   | A0002 | CSE    | A       |  NULL |
+| Cain  | A0003 | CSE    | B       |  NULL |
+| Daisy | A0004 | CSD    | B       |  NULL |
+| Eliot | A0005 | CSD    | C       |  NULL |
+| Frank | A0006 | CSD    | C       |  NULL |
++-------+-------+--------+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> update student set marks=97 where rno='A0001';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student set
+    -> marks=70 where rno='A0002',
+    -> marks=89 where rno='A0003';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near',
+marks=89 where rno='A0003'' at line 2
+mysql> update student set
+    -> marks=70 where rno='A0002';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student set
+    -> marks=89 where rno='A0003';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student set
+    -> marks=72 where rno='A0004'
+    -> ;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student set
+    -> marks=90 where rno='A0005';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student set
+    -> marks=95 where rno='A0006';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from student;
++-------+-------+--------+---------+-------+
+| name  | rno   | branch | section | marks |
++-------+-------+--------+---------+-------+
+| Alice | A0001 | CSE    | A       |    97 |
+| Bob   | A0002 | CSE    | A       |    70 |
+| Cain  | A0003 | CSE    | B       |    89 |
+| Daisy | A0004 | CSD    | B       |    72 |
+| Eliot | A0005 | CSD    | C       |    90 |
+| Frank | A0006 | CSD    | C       |    95 |
++-------+-------+--------+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> update student section='A' where marks>90;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near'='A' where marks>90' at line 1
+mysql> update student set section='A' where marks>90;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 2  Changed: 1  Warnings: 0
+
+mysql> select * from student;
++-------+-------+--------+---------+-------+
+| name  | rno   | branch | section | marks |
++-------+-------+--------+---------+-------+
+| Alice | A0001 | CSE    | A       |    97 |
+| Bob   | A0002 | CSE    | A       |    70 |
+| Cain  | A0003 | CSE    | B       |    89 |
+| Daisy | A0004 | CSD    | B       |    72 |
+| Eliot | A0005 | CSD    | C       |    90 |
+| Frank | A0006 | CSD    | A       |    95 |
++-------+-------+--------+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table modify marks varchar(3);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near'marks varchar(3)' at line 1
+mysql> alter table modify column marks varchar(3);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near'column marks varchar(3)' at line 1
+mysql> alter table student modify column marks varchar(3);
+Query OK, 6 rows affected (0.14 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++-------+-------+--------+---------+-------+
+| name  | rno   | branch | section | marks |
++-------+-------+--------+---------+-------+
+| Alice | A0001 | CSE    | A       | 97    |
+| Bob   | A0002 | CSE    | A       | 70    |
+| Cain  | A0003 | CSE    | B       | 89    |
+| Daisy | A0004 | CSD    | B       | 72    |
+| Eliot | A0005 | CSD    | C       | 90    |
+| Frank | A0006 | CSD    | A       | 95    |
++-------+-------+--------+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> desc student;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| name    | varchar(20) | YES  |     | NULL    |       |
+| rno     | varchar(5)  | YES  |     | NULL    |       |
+| branch  | varchar(3)  | YES  |     | NULL    |       |
+| section | varchar(1)  | YES  |     | NULL    |       |
+| marks   | varchar(3)  | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.02 sec)
+
+mysql> delete from student where section='C';
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from student;
++-------+-------+--------+---------+-------+
+| name  | rno   | branch | section | marks |
++-------+-------+--------+---------+-------+
+| Alice | A0001 | CSE    | A       | 97    |
+| Bob   | A0002 | CSE    | A       | 70    |
+| Cain  | A0003 | CSE    | B       | 89    |
+| Daisy | A0004 | CSD    | B       | 72    |
+| Frank | A0006 | CSD    | A       | 95    |
++-------+-------+--------+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> truncate table student;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> select * from student;
+Empty set (0.00 sec)
+
+mysql> desc student;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| name    | varchar(20) | YES  |     | NULL    |       |
+| rno     | varchar(5)  | YES  |     | NULL    |       |
+| branch  | varchar(3)  | YES  |     | NULL    |       |
+| section | varchar(1)  | YES  |     | NULL    |       |
+| marks   | varchar(3)  | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> drop table student;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc student;
+ERROR 1146 (42S02): Table 'mydb.student' doesn't exist
+mysql>
